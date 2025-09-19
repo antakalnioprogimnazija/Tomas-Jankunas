@@ -885,6 +885,28 @@ function renderJourneyDashboard() {
         `;
         return;
     }
+    
+    const renderCircularProgress = (count: number, goal: number, label: string, color: string) => {
+        const progress = Math.min((count / goal) * 100, 100);
+        const radius = 54;
+        const circumference = 2 * Math.PI * radius;
+        const offset = Math.max(0, circumference - (progress / 100) * circumference);
+
+        return `
+            <div class="stat-card progress-card">
+                <div class="progress-circle-container">
+                    <svg class="progress-circle" viewBox="0 0 120 120">
+                        <circle class="progress-circle-bg" cx="60" cy="60" r="${radius}"></circle>
+                        <circle class="progress-circle-bar" cx="60" cy="60" r="${radius}" transform="rotate(-90 60 60)" 
+                                style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset}; stroke: ${color};"></circle>
+                        <text class="progress-circle-text" x="50%" y="50%" dy=".3em" style="fill: ${color};">${count}</text>
+                    </svg>
+                </div>
+                <div class="stat-label">${label}</div>
+                <div class="stat-goal">Tikslas: ${goal}</div>
+            </div>
+        `;
+    };
 
     const topFeelings = Object.entries(journeyData.identifiedFeelings)
         .sort((a, b) => b[1] - a[1])
@@ -916,14 +938,8 @@ function renderJourneyDashboard() {
             <h2>Mano NVC kelionė</h2>
             <p>Jūsų progreso suvestinė, padedanti stebėti, kaip sekasi taikyti NVC principus.</p>
             <div class="journey-stats">
-                <div class="stat-card">
-                    <div class="stat-value">${journeyData.rephrasedCount}</div>
-                    <div class="stat-label">Performuluoti prašymai</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">${journeyData.analyzedCount}</div>
-                    <div class="stat-label">Išanalizuotos situacijos</div>
-                </div>
+                ${renderCircularProgress(journeyData.rephrasedCount, 25, 'Performuluoti prašymai', 'var(--primary-color)')}
+                ${renderCircularProgress(journeyData.analyzedCount, 25, 'Išanalizuotos situacijos', 'var(--secondary-color)')}
                 <div class="stat-card">
                     <div class="stat-value">${savedItemsCount}</div>
                     <div class="stat-label">Išsaugoti terminai</div>
