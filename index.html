@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konstruktyvi komunikacija: jausmai, poreikiai, prašymai</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^0.7.0"
+        }
+      }
+    </script>
+    <script type="module" src="index.tsx" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Konstruktyvi komunikacija: jausmai, poreikiai, prašymai</h1>
+        <p>Jūsų įrankis empatiškam bendravimui</p>
+    </header>
+
+    <nav>
+        <button id="nav-reframer" class="active" aria-current="page">Prašymų įrankis</button>
+        <button id="nav-explorer" aria-current="false">Jausmai ir poreikiai</button>
+        <button id="nav-guide" aria-current="false">NVC principai</button>
+    </nav>
+
+    <main>
+        <section id="reframer-section" class="content-section active">
+            <h2>Prašymų performulavimo įrankis</h2>
+            <p>Paverskite neaiškius norus į konkrečius, įgyvendinamus prašymus, pagrįstus NVC principais.</p>
+            <div class="reframer-container">
+                <div class="input-group">
+                    <label for="user-input">Jūsų sakinys:</label>
+                    <textarea id="user-input" rows="4" placeholder="Pvz., „Norėčiau, kad parodytum nors truputį pagarbos.“"></textarea>
+                    
+                    <div class="audience-selector">
+                        <label>Kam skirtas prašymas?</label>
+                        <div class="radio-group">
+                            <div>
+                                <input type="radio" id="audience-child" name="audience" value="child">
+                                <label for="audience-child">Vaikui</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="audience-partner" name="audience" value="partner">
+                                <label for="audience-partner">Tėvams</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="audience-colleague" name="audience" value="colleague" checked>
+                                <label for="audience-colleague">Darbuotojui</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="rephrase-button">Performuluoti</button>
+                </div>
+                <div class="output-group">
+                    <label>Konstruktyvus bendravimo pasiūlymas:</label>
+                    <div class="output-wrapper">
+                        <div id="gemini-output" aria-live="polite">
+                            <p class="placeholder">Čia atsiras performuluotas prašymas pagal nesmurtinės komunikacijos principus...</p>
+                        </div>
+                        <div id="share-container" class="share-container hidden">
+                            <button id="share-button" title="Dalintis">Dalintis</button>
+                            <div id="share-dropdown" class="share-dropdown hidden">
+                                <button id="copy-button">Kopijuoti tekstą</button>
+                                <button id="email-button">Siųsti el. paštu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="explorer-section" class="content-section">
+            <h2>Jausmų ir Poreikių tyrinėjimas</h2>
+            <div id="saved-items-container" class="saved-items-container hidden">
+                <h3>⭐ Išsaugoti terminai</h3>
+                <ul id="saved-items-list">
+                    <!-- Saved items will be dynamically inserted here -->
+                </ul>
+                <p id="no-saved-items" class="placeholder">Kol kas nieko neišsaugojote. Spustelėkite žvaigždutę šalia termino, kad jį pridėtumėte.</p>
+            </div>
+            <div class="explorer-container">
+                <div class="feelings-container">
+                    <h3>Jausmai, kai poreikiai...</h3>
+                    <div class="tabs">
+                        <button class="tab-link active" data-tab="met">...yra patenkinti</button>
+                        <button class="tab-link" data-tab="unmet">...nėra patenkinti</button>
+                    </div>
+                    <div id="feelings-met" class="tab-content active"></div>
+                    <div id="feelings-unmet" class="tab-content"></div>
+                </div>
+                <div class="needs-container">
+                    <h3>Poreikiai</h3>
+                    <div id="needs-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="guide-section" class="content-section">
+            <h2>Nesmurtinės komunikacijos principai</h2>
+            <article class="nvc-guide">
+                <p>Nesmurtinė komunikacija (NVC), sukurta Marshall Rosenberg, padeda kurti pagarbius ir nuoširdžius santykius. Ji remiasi keturiais pagrindiniais principais:</p>
+                <ol>
+                    <li>
+                        <h3>Stebėjimas be vertinimo</h3>
+                        <p>Apibūdinkite situaciją objektyviai, neinterpretuodami. <br><em>Pvz., vietoj „Tu visada vėluoji!“ sakykite „Šiandien atvykai 20 minučių vėliau nei sutarta.“</em></p>
+                    </li>
+                    <li>
+                        <h3>Jausmų įvardijimas</h3>
+                        <p>Aiškiai išsakykite, ką jaučiate, be kaltinimų. <br><em>Pvz., vietoj „Tu mane nervuoji!“ sakykite „Jaučiuosi susierzinęs, kai tenka ilgai laukti.“</em></p>
+                    </li>
+                    <li>
+                        <h3>Poreikių atpažinimas</h3>
+                        <p>Išsakykite, koks jūsų poreikis slypi už jausmų. <br><em>Pvz., „Man svarbu punktualumas, nes noriu jaustis gerbiamas.“</em></p>
+                    </li>
+                    <li>
+                        <h3>Aiškus ir konstruktyvus prašymas</h3>
+                        <p>Pateikite aiškų, įgyvendinamą prašymą, o ne reikalavimą. <br><em>Pvz., „Ar kitą kartą galėtum atvykti sutartu laiku arba pranešti, jei vėluosi?“</em></p>
+                    </li>
+                </ol>
+                <h4>Papildomi svarbūs aspektai:</h4>
+                <ul>
+                    <li><strong>Empatija:</strong> Išklausyti kitą žmogų be vertinimo, stengiantis suprasti jo jausmus ir poreikius.</li>
+                    <li><strong>Atsakomybė už savo jausmus:</strong> Pripažinti, kad mūsų jausmai kyla iš mūsų poreikių, o ne iš kitų veiksmų.</li>
+                    <li><strong>Sąmoningumas:</strong> Būti atidiems savo kalbai, kad neskatintume konflikto.</li>
+                </ul>
+
+                <h4>Pavyzdžiai: Kreipiniai mokytojams</h4>
+                <p class="example-group-description">Šie pavyzdžiai skirti spręsti situacijas, susijusias su profesine etika ir atsakomybėmis.</p>
+                <div class="example">
+                    <h5>Dėl vėlavimo</h5>
+                    <p>"Pastebėjau, kad šiandien vėlavote į pamoką. Aš jaučiuosi sunerimęs, nes man svarbu užtikrinti pamokos nuoseklumą. Norėčiau jūsų paprašyti ateityje atvykti laiku, kad pamokos netrikdytų vėlavimas."</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl mokinių saugumo</h5>
+                    <p>"Pastebėjau, kad neatvykote į savo postą per pertrauką. Jaučiuosi susirūpinęs, nes man svarbu užtikrinti, kad mokiniai jaustųsi saugiai. Ar galėtumėte ateityje pasirūpinti, kad būtumėte savo vietoje nustatytu laiku?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl apkalbų</h5>
+                    <p>"Išgirdau, kaip šiandien per posėdį neigiamai kalbėjote apie kitą mokinį. Jaučiuosi nepatogiai, nes man svarbu, kad kritika būtų konstruktyvi. Ar galėtumėte ateityje, jei turite kritikos, aptarti ją su mokiniu ar kolega asmeniškai, o ne viešai?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl el. dienyno pildymo</h5>
+                    <p>"Pastebėjau, kad jau kelias dienas nėra jokių įrašų jūsų el. dienyne. Jaučiuosi sunerimęs, nes man svarbu, kad tėvai būtų nuolat informuojami apie savo vaiko pažangą. Ar galėtumėte dėti įrašus laiku, kad tėvai galėtų sekti savo vaiko pažangą?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl neatsakytų laiškų</h5>
+                    <p>"Pastebėjau, kad neatsakėte į mano praėjusios savaitės el. laišką. Jaučiuosi susirūpinęs, nes man svarbu, kad komunikacija tarp mūsų būtų sklandi. Ar galėtumėte peržiūrėti savo el. paštą ir atsakyti į laiškus, kad mes galėtume efektyviai dirbti?"</p>
+                </div>
+
+                <h4>Pavyzdžiai: Kreipiniai tėvams</h4>
+                <p class="example-group-description">Šie pavyzdžiai orientuoti į konstruktyvų dialogą su tėvais, vengiant kaltinimų ir skatinant bendradarbiavimą.</p>
+                <div class="example">
+                    <h5>Dėl piktų laiškų</h5>
+                    <p>"Gavau jūsų el. laišką, kuriame pastebėjau stiprų toną. Jaučiuosi sunerimęs, nes man svarbu, kad mes bendrautume pagarbiai ir išklausytume vienas kitą. Ar galėtume pasikalbėti, kad suprasčiau jūsų poziciją ir išspręstume nesusipratimą?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl duomenų viešinimo</h5>
+                    <p>"Išgirdau, kad pasidalinote kito mokinio vardu ir pavarde socialiniuose tinkluose. Jaučiuosi susirūpinęs, nes man svarbu, kad būtų gerbiamas visų mokinių privatumas. Ar galėtumėte ateityje gerbti kitų mokinių duomenis ir jų neviešinti?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl el. dienyno</h5>
+                    <p>"Pastebėjau, kad nesijungėte į el. dienyną jau ilgą laiką. Jaučiuosi susirūpinęs, nes man svarbu, kad žinotumėte, kaip jūsų vaikui sekasi. Ar galėtumėte prisijungti prie el. dienyno ir peržiūrėti vaiko pažangą bei lankomumą, kad mes galėtume laiku aptarti galimus sunkumus?"</p>
+                </div>
+                <div class="example">
+                    <h5>Dėl praleistų pamokų</h5>
+                    <p>"Pastebėjau, kad jūsų vaikas nebuvo pamokose jau kelias dienas, ir neturime jokio paaiškinimo dėl praleistų pamokų. Jaučiuosi sunerimęs, nes man svarbu žinoti, ar viskas gerai ir kad vaikas nepraleistų svarbių dalykų pamokose. Ar galėtumėte atsiųsti paaiškinimą, kad žinotume, kad jūsų vaikas saugus, ir kad galėtume kartu rasti sprendimą, kaip spręsti praleistas pamokas?"</p>
+                </div>
+                 <div class="example">
+                    <h5>Dėl sveikatos pažymos</h5>
+                    <p>"Pastebėjau, kad dar negavome vaiko sveikatos pažymos, o terminas jau pasibaigė. Jaučiuosi susirūpinęs, nes man svarbu, kad mokykla turėtų naujausią informaciją apie vaiką ir galėtų užtikrinti jo saugumą. Ar galėtumėte pasirūpinti, kad pažyma būtų pristatyta, kad mokykla turėtų visą reikiamą informaciją?"</p>
+                </div>
+
+            </article>
+        </section>
+    </main>
+
+    <div id="modal-container" class="modal-container hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div id="modal-overlay" class="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="modal-close-button" class="modal-close" aria-label="Uždaryti">&times;</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-body"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Sukurta remiantis NVC medžiaga, pagal Dr. Maršalas Rozenbergą, su nuoroda į YOutube <a href="https://www.youtube.com/watch?v=2TvvniiNTk8" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=2TvvniiNTk8</a>.</p>
+    </footer>
+</body>
+</html>
